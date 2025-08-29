@@ -1,0 +1,90 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+build/
+develop-eggs/
+dist/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.memo
+.pytest_cache/
+
+# Django
+db.sqlite3
+media/
+static_root/
+
+# Scrapy project data
+.scrapy
+
+# C extensions
+*.so
+*.dylib
+*.dll
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+
+# OS
+.DS_Store
+.Trashes
+Thumbs.db
+ehthumbs.db
+*.stackdump
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp/
+.pnp.js
+.next/
+out/
+build/
+
+# Test reports
+.coverage
+htmlcov/
+
+# Other files
+data/
+logs/
+crawls/
+secrets/
+models/
+*.tmp
+*.bak
+*.jl
+*.csv
+*.joblib
+*.zip

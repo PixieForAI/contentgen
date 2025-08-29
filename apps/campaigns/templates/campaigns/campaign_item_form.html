@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if object %}
+        Regenerate Item: {{ object.title }}
+    {% else %}
+        Generate New Item
+    {% endif %}
+{% endblock title %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-xl">
+    
+    <div class="mb-6 pb-4 border-b border-gray-200">
+        <h1 class="text-2xl font-bold text-gray-900">
+            {% if object %}
+                Regenerate Content Item
+            {% else %}
+                Generate New Content Item
+            {% endif %}
+        </h1>
+        <p class="mt-1 text-sm text-gray-600">
+            Provide a title and a content brief. The AI will generate tailored content for all platforms.
+        </p>
+        <p class="mt-1 text-sm text-gray-500">
+            For Campaign: 
+            <a href="{% url 'campaign-detail' campaign.pk %}" class="font-medium text-indigo-600 hover:underline">{{ campaign.title }}</a>
+        </p>
+    </div>
+
+    {# The 'enctype' is still needed for potential file uploads, even if hidden #}
+    <form method="POST" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+
+        <div>
+            <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                {{ form.title.label }}
+            </label>
+            {{ form.title }}
+            {% if form.title.errors %}
+                <div class="mt-1 text-sm text-red-600">
+                    {% for error in form.title.errors %}<p>{{ error }}</p>{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="flex items-end space-x-4">
+            <div class="flex-grow">
+                <label for="{{ form.input_content.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                    {{ form.input_content.label }}
+                </label>
+                {{ form.input_content }}
+                 {% if form.input_content.errors %}
+                    <div class="mt-1 text-sm text-red-600">
+                        {% for error in form.input_content.errors %}<p>{{ error }}</p>{% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <button type="submit" class="h-fit flex-shrink-0 inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+                {% if object %}
+                    Regenerate & Save
+                {% else %}
+                    Generate & Save
+                {% endif %}
+            </button>
+        </div>
+
+        {% for field in form %}
+            {% if field.name != 'title' and field.name != 'input_content' %}
+                {# This hidden field ensures the existing generated content is carried over if not regenerated. #}
+                <div class="hidden">{{ field }}</div>
+                
+                {# Display the field's current value in a read-only format if it exists. #}
+                {% if field.value %}
+                <div>
+                    <label for="field-{{ forloop.counter }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                    <div class="relative group mt-1">
+                        <div id="field-{{ forloop.counter }}" class="p-4 pr-12 bg-gray-50 border border-gray-200 rounded-md text-gray-800 whitespace-pre-wrap">{{ field.value }}</div>
+                        <div class="absolute top-2 right-2">
+                            <button type="button" 
+                                    class="copy-btn p-1.5 rounded-md bg-gray-200 text-gray-600 hover:bg-gray-300 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity"
+                                    data-target="#field-{{ forloop.counter }}"
+                                    title="Copy to clipboard">
+                                <span class="copy-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                </span>
+                                <span class="check-icon hidden">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        <div class="pt-4 text-center">
+            <a href="{% url 'campaign-detail' campaign.pk %}" class="text-sm font-medium text-gray-600 hover:underline">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const copyButtons = document.querySelectorAll('.copy-btn');
+
+    copyButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const targetSelector = this.dataset.target;
+            const contentElement = document.querySelector(targetSelector);
+            
+            if (contentElement) {
+                navigator.clipboard.writeText(contentElement.innerText).then(() => {
+                    const copyIcon = button.querySelector('.copy-icon');
+                    const checkIcon = button.querySelector('.check-icon');
+
+                    copyIcon.classList.add('hidden');
+                    checkIcon.classList.remove('hidden');
+
+                    setTimeout(() => {
+                        copyIcon.classList.remove('hidden');
+                        checkIcon.classList.add('hidden');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    alert('Failed to copy text.');
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock content %}

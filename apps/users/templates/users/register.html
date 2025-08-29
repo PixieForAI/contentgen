@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Register | ContentGen{% endblock title %}
+
+{% block content %}
+<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto">
+    <div class="w-full bg-white rounded-lg shadow-xl md:mt-0 sm:max-w-md xl:p-0">
+        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+                Create a new account
+            </h1>
+
+            <form class="space-y-4 md:space-y-6" method="POST">
+                {% csrf_token %}
+
+                <div class="form-fields space-y-4">
+                    {{ form.as_p }}
+                </div>
+                
+                <button type="submit" class="w-full text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Create Account</button>
+                
+                <p class="text-sm font-light text-gray-500">
+                    Already have an account? <a href="{% url 'login' %}" class="font-medium text-indigo-600 hover:underline">Log in</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* A little bit of CSS to style the form rendered by as_p */
+    .form-fields p {
+        display: flex;
+        flex-direction: column;
+    }
+    .form-fields label {
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem; /* text-sm */
+        font-weight: 500; /* font-medium */
+        color: #111827; /* text-gray-900 */
+    }
+    .form-fields input {
+        background-color: #F9FAFB; /* bg-gray-50 */
+        border: 1px solid #D1D5DB; /* border-gray-300 */
+        color: #111827; /* text-gray-900 */
+        font-size: 0.875rem; /* sm:text-sm */
+        border-radius: 0.5rem; /* rounded-lg */
+        width: 100%;
+        padding: 0.625rem; /* p-2.5 */
+    }
+    .form-fields .helptext {
+        font-size: 0.75rem; /* text-xs */
+        color: #6B7280; /* text-gray-500 */
+        margin-top: 0.5rem;
+        margin-left: 0.25rem;
+    }
+    .form-fields ul.errorlist {
+        margin-top: 0.25rem;
+        font-size: 0.875rem; /* text-sm */
+        color: #DC2626; /* text-red-600 */
+        list-style: none;
+        padding: 0;
+    }
+</style>
+{% endblock content %}

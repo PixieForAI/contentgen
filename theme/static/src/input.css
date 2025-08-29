@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  You can add your own custom CSS rules and custom classes here.
+  For example:
+
+  .custom-gradient {
+    @apply bg-gradient-to-r from-blue-500 to-indigo-600 text-white;
+  }
+*/
